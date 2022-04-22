@@ -1,0 +1,32 @@
+@import "./constants.css";
+@import "./animations.css";
+
+/* Файлы с CSS компонентов подключаются здесь неслучайно. Пока не удалось делать импорты через JS так,
+ * чтобы в каждом файле были доступны CSS переменные без их дублирования.
+ */
+
+@import "../components/AppRoot/AppRoot.css";
+
+/* Typography */
+@import "../components/Typography/Title/Title.css";
+@import "../components/Typography/Headline/Headline.css";
+@import "../components/Typography/Subhead/Subhead.css";
+@import "../components/Typography/Caption/Caption.css";
+@import "../components/Typography/Text/Text.css";
+@import "../components/Typography/Paragraph/Paragraph.css";
+
+/* Service */
+@import "../components/Tappable/Tappable.css";
+
+/* Primitives */
+@import "../components/Button/Button.css";
+@import "../components/FocusVisible/FocusVisible.css";
+
+/* Blocks */
+@import "../components/ButtonGroup/ButtonGroup.css";
+@import "../components/Div/Div.css";
+@import "../components/Spinner/Spinner.css";
+
+/* Глобальные стили vkui.
+ */
+@import "./common.css";

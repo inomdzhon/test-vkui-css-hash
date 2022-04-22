@@ -1,0 +1,6 @@
+.Code {
+  font-family: "JetBrainsMono", monospace;
+  padding: 0 3px;
+  background: var(--button_secondary_background);
+  border-radius: 4px;
+}
