@@ -81,7 +81,7 @@ Size: 13.9 kB with all dependencies, minified and gzipped
 
 ## Примечание
 
-### Ещё немного метрик
+### Стили только `Button`
 
 Оставил стили только `Button` и хэшировал через `"[hash:base64:5]"`.
 
@@ -101,3 +101,34 @@ Size: 1.89 kB with all dependencies, minified and gzipped
 ```
 
 Здесь хэшированный выигрывает, в отличие от примера, где мы сравнивали хэширования всего пакета (см. выше **Метрики** -> **css-modules-with-hash** -> **CSS** -> **п.1**).
+
+### Стили всего проекта VKUI
+
+> Версия `v4.29.0`
+
+> ⚠️ Прогонял только CSS. Конечно же, вёрстка при запуске поедет, т.к. в JS классы не обрабатываются
+
+До хэширования
+```
+CSS
+Size: 43.48 kB with all dependencies, minified and gzipped
+```
+
+1. `"[hash:base64:5]"`
+    ```
+    CSS
+    Size: 42.77 kB with all dependencies, minified and gzipped
+    ```
+    разница в `0.71 kB`
+2. `"[hash:base64:4]"`
+    ```
+    CSS
+    Size: 41.71 kB with all dependencies, minified and gzipped
+    ```
+    разница в `1.77 kB`
+3. `"vkui[hash:base64:3]"`
+    ```
+    CSS
+    Size: 41.04 kB with all dependencies, minified and gzipped
+    ```
+    разница в `2.44 kB`
