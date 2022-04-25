@@ -4,6 +4,7 @@ const isDevelopment = NODE_ENV === "development";
 const useModules = isProduction || isDevelopment;
 const keepCss = Boolean(BABEL_KEEP_CSS);
 const runtimeVersion = require("./package.json").dependencies["@babel/runtime"];
+const { generateScopedName } = require("./constants");
 
 const testFiles = [
   "./src/**/*.test.ts",
@@ -66,6 +67,7 @@ module.exports = {
     ["react-css-modules", {
       exclude: "node_modules",
       handleMissingStyleName: "warn",
+      generateScopedName: generateScopedName,
       attributeNames: {
         className: "className",
         hoverMode: "hoverMode",

@@ -9,6 +9,7 @@ const checkKeyframes = require("./tasks/postcss-check-keyframes");
 const wrapToGlobal = require("./tasks/postcss-wrap-to-global");
 const { defaultSchemeId } = require("./package.json");
 const VkSansMandatoryDeclarations = require("./postcss-plugin-vk-sans");
+const { generateScopedName } = require("./constants");
 
 const animationsSource = path.join(__dirname, "src/styles/animations.css");
 const cssPropSources = [
@@ -45,7 +46,7 @@ let plugins = [
   }),
   autoprefixer(),
   cssModules({
-    generateScopedName: "[hash:base64:5]",
+    generateScopedName: generateScopedName,
     getJSON: () => void 0,
   }),
   // eslint-disable-next-line new-cap
