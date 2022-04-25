@@ -44,7 +44,7 @@ Size: 18.59 kB with all dependencies, minified and gzipped
 
 #### JS:
 ```
-Size: 14.15 kB with all dependencies, minified and gzipped
+Size: 13.9 kB with all dependencies, minified and gzipped
 ````
 
 Отдельно отмечу вес JS после удаления `jsxRuntinme` (**не коммитил**):
@@ -54,53 +54,33 @@ Size: 13.9 kB with all dependencies, minified and gzipped
 
 #### CSS
 
-Игрался с [generateScopedName](https://github.com/madyankin/postcss-modules#generating-scoped-names).
-Нужно менять в `babel` и `postcss` конфигах, поэтому для удобства вынес сюда [constants.js](./constants.js).
+Для того чтобы алгоритм DEFLATE, используемый в gzip, сжимал файл максимально эффективно, необходимо укорачивать классы, 
+а не создавать уникальные (имеется ввиду `[hash:base64:5]` в конфиге CSS Modules). При последнем, мы теряем преимущества алгоритма LZ77 (внутри DEFLATE),
+который создаёт ссылки на повторяющиеся строки.
 
-1. `"[hash:base64:5]"`
-    ```
-    Size: 18.66 kB with all dependencies, minified and gzipped
-    ```
-    Как мы видим, несмотря на то, что классы значительно сократились, вес стал даже больше.
+В [generateScopedName](https://github.com/madyankin/postcss-modules#generating-scoped-names) набросал функцию, которая
+сокращает названия BEM классов. Блок, элемент и модификатор
+укорачивается до 3-х символов, а `__`, `--` и `-` удаляются. Функцию можно найти здесь [./css-modules-with-hash/constants.js](./css-modules-with-hash/constants.js)
+(она шарится между `babel` и `postcss` конфигами).
 
-2. `"[hash:base64:4]"`
+<img src="./assets/diff-example.png" alt="Разница между хэшированной и не хэшированной версиями">
+
+**Pис. 1.** Разница между хэшированной и не хэшированной версиями.
+
+1. С префиксом `vkui`
     ```
-    Size: 18.54 kB with all dependencies, minified and gzipped
+    Size: 18.4 kB with all dependencies, minified and gzipped
     ```
-    Стало лучше. Правда чем меньше число, тем выше будет вероятность коллизий, если говорить о том,
-    что проект, который подключает VKUI, тоже будет хэшировать классы. Можно уменьшить генерируемое значение,
-    но при этом добавлять префикс `vkui`.
-3. `"vkui[hash:base64:3]"`
+    Разница в `0.19 kB`.
+2. Без префикса `vkui`
     ```
-    Size: 18.43 kB with all dependencies, minified and gzipped
+    Size: 18.38 kB with all dependencies, minified and gzipped
     ```
+    Разница в `0.21 kB`.
 
 ---
 
-По итогу можно сэкономить `0.16 kB`.
-
 ## Примечание
-
-### Стили только `Button`
-
-Оставил стили только `Button` и хэшировал через `"[hash:base64:5]"`.
-
-<img src="./assets/hash-base64-5.png">
-
-> Справедливости ради отмечу, что я вручную изменил `vkui.css`.  
-> Перед запуском `size-limit`, прогнал оба файла через https://www.toptal.com/developers/cssminifier/.
-
-Без хэширования
-```
-Size: 1.94 kB with all dependencies, minified and gzipped
-```
-
-С хэшированием
-```
-Size: 1.89 kB with all dependencies, minified and gzipped
-```
-
-Здесь хэшированный выигрывает, в отличие от примера, где мы сравнивали хэширования всего пакета (см. выше **Метрики** -> **css-modules-with-hash** -> **CSS** -> **п.1**).
 
 ### Стили всего проекта VKUI
 
@@ -114,21 +94,13 @@ CSS
 Size: 43.48 kB with all dependencies, minified and gzipped
 ```
 
-1. `"[hash:base64:5]"`
+1. С префиксом `vkui`
     ```
-    CSS
-    Size: 42.77 kB with all dependencies, minified and gzipped
+    Size: 41.38 kB with all dependencies, minified and gzipped
     ```
-    разница в `0.71 kB`
-2. `"[hash:base64:4]"`
+   Разница в `2.1 kB`.
+2. Без префикса `vkui`
     ```
-    CSS
-    Size: 41.71 kB with all dependencies, minified and gzipped
+    Size: 41.01 kB with all dependencies, minified and gzipped
     ```
-    разница в `1.77 kB`
-3. `"vkui[hash:base64:3]"`
-    ```
-    CSS
-    Size: 41.04 kB with all dependencies, minified and gzipped
-    ```
-    разница в `2.44 kB`
+   Разница в `2.47 kB`.
