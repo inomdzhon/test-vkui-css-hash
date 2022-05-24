@@ -125,21 +125,6 @@ Size: 43.48 kB with all dependencies, minified and gzipped
  const Cmp = () => <div className={styles.Cmp} />
  ```
 
-Затем, для уменьшения JS бандла, нужно найти/написать babel плагин, который сможет траспайлить всё это в
-
-```jsx
-const Cmp = () => <div className="vkuicmp" />
-```
-
-А то сейчас вот так транспайлится
-
-```jsx
-const styles = { Cmp: "vkuicmp" };
-const Cmp = () => <div className={styles.Cmp} />
-```
-
-из-за чего получается, что уменьшая размер CSS мы увеличиваем размер JS бандла.
-
 ### CSS-in-JS
 
 Совершенно иной подход, который требует отдельного изучения. Сейчас есть масса инструментов:
